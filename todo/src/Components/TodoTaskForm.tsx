@@ -1,10 +1,16 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Grid } from "@mui/material";
-import TodoTask from "./TodoTask";
 import { IFormData } from "../Todo";
-import { ChangeEvent, useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/styles";
+import TaskAction from "./TaskAction";
 
 const useStyles = makeStyles({
   button: {
@@ -18,55 +24,104 @@ const useStyles = makeStyles({
   input: {
     height: 40,
   },
+  span: {
+    color: "red",
+  },
 });
 
-function TodoTaskForm() {
+const TodoTaskForm: React.FC = () => {
   const classes = useStyles();
   const [todoList, setTodoList] = useState<IFormData[]>([]);
-  const [task, setTask] = useState<string>(" ");
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (event.target.name === "task") {
-      setTask(event.target.value);
-    }
-  };
+  const [open, setOpen] = React.useState(false);
+  const [count, setCount] = useState(0);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormData>();
 
-  const addTask = (): void => {
-    const id = todoList.length + 1;
+  const onSubmit = (data: IFormData) => {
     const date = new Date();
-    const newTask = { taskName: task, id: id, date: date };
+    const newTask = {
+      taskName: data.taskName,
+      description: data.description,
+      id: count,
+      date: date,
+    };
     setTodoList([...todoList, newTask]);
-    window.alert("Add");
-    setTask("");
+    reset();
+    handleClose();
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    reset();
+  };
   return (
     <>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add Task
+      </Button>
+
       <Grid item container justifyContent="center" alignItems="center">
-        <form className="form-container">
-          <label>ADD TASK</label>
-          <input
-            type="text"
-            className={classes.input}
-            value={task}
-            placeholder="Enter Task Name"
-            id="new-todo"
-            name="task"
-            onChange={handleChange}
-          />
-          <Button
-            id="new-todo-button"
-            variant="contained"
-            type="reset"
-            onClick={addTask}
-          >
-            {" "}
-            SUBMIT
-          </Button>
-        </form>
+        <Dialog open={open} onClose={handleClose}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DialogTitle>Add Task</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please enter task and description here.
+              </DialogContentText>
+
+              <TextField
+                {...register("taskName", { required: true })}
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Task Name"
+                type="text"
+                fullWidth
+                variant="standard"
+                placeholder="Enter Task"
+                name="taskName"
+              /> 
+              {errors?.taskName && (
+                <span className={classes.span}>This field is required</span>
+              )}
+
+              <TextField
+                {...register("description", { required: true })}
+                autoFocus
+                margin="dense"
+                id="new-description"
+                label="Description"
+                type="text"
+                fullWidth
+                variant="standard"
+                name="description"
+                placeholder="Description"
+              ></TextField>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button
+                id="new-todo-button"
+                variant="contained"
+                type="submit"
+                onClick={() => setCount(count + 1)}
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
       </Grid>
-      <TodoTask todoList={todoList} setTodoList={setTodoList} />
+      <TaskAction todoList={todoList} setTodoList={setTodoList} />
     </>
   );
-}
+};
 
 export default TodoTaskForm;
