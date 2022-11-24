@@ -9,7 +9,7 @@ const Main = () => {
   return (
     <Routes>
       {/* <Route path='/' element= { <Home />}/> */}
-      <Route path="/" element={<TodoTask />} />
+      <Route path="/" element={<TodoTask  />} />
       <Route path="/todob" element={<TodoB />} />
    
     </Routes>

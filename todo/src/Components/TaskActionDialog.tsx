@@ -13,7 +13,6 @@ import { Grid } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { IFormData } from "../Todo";
-import { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
@@ -26,8 +25,6 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [name, setName] = useState<string>(task.taskName);
-  const [description, setDescription] = useState<string>(task.description);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -40,25 +37,23 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
   };
   const handleClose = () => {
     setOpenEdit(false);
-    setName(task.taskName);
-    setDescription(task.description);
   };
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<IFormData>();
+  } = useForm<IFormData>({});
+  setValue("taskName", task.taskName);
+  setValue("description", task.description);
+
   const onSave = (data: IFormData) => {
-    if (
-      setName(data.taskName) !== null &&
-      setDescription(data.description) !== null
-    ) {
-      editTask(task.id, name, description);
+    if (data.taskName !== null && data.description !== null) {
+      editTask(task.id, data.taskName, data.description);
     }
 
     setOpenEdit(false);
   };
-
   return (
     <>
       <div className="task">
@@ -124,10 +119,6 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         variant="standard"
                         placeholder="Enter Task"
                         name="taskName"
-                        value={name}
-                        onChange={(
-                          event: React.ChangeEvent<HTMLInputElement>
-                        ) => setName(event.target.value)}
                       />
                       {errors.taskName && (
                         <td className={classes.span}>This field is required</td>
@@ -142,10 +133,6 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         type="text"
                         fullWidth
                         variant="standard"
-                        value={description}
-                        onChange={(
-                          event: React.ChangeEvent<HTMLInputElement>
-                        ) => setDescription(event.target.value)}
                         name="description"
                         placeholder="Description"
                       />
