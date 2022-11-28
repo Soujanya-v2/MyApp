@@ -13,7 +13,7 @@ interface TodoTaskProps {
   id: number;
   date: Date;
   deleteTask(taskDelete: number): void;
-  editTask( taskEditId: number,taskEditName:string,taskEditDescription:string): void;
+  editTask(taskEditId: number, task: IFormData): void;
 }
 
 interface TodoProps {

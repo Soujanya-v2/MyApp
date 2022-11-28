@@ -33,7 +33,7 @@ const TodoTaskForm: React.FC = () => {
   const classes = useStyles();
   const [todoList, setTodoList] = useState<IFormData[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const {
     register,
     handleSubmit,
@@ -42,6 +42,7 @@ const TodoTaskForm: React.FC = () => {
   } = useForm<IFormData>();
 
   const onSubmit = (data: IFormData) => {
+    setCount((prevCount) => prevCount + 1);
     const date = new Date();
     const newTask = {
       taskName: data.taskName,
@@ -87,7 +88,7 @@ const TodoTaskForm: React.FC = () => {
                 variant="standard"
                 placeholder="Enter Task"
                 name="taskName"
-              /> 
+              />
               {errors?.taskName && (
                 <span className={classes.span}>This field is required</span>
               )}
@@ -107,12 +108,7 @@ const TodoTaskForm: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button
-                id="new-todo-button"
-                variant="contained"
-                type="submit"
-                onClick={() => setCount(count + 1)}
-              >
+              <Button id="new-todo-button" variant="contained" type="submit">
                 Save
               </Button>
             </DialogActions>

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@mui/material";
-import { TodoProps } from "../Todo";
+import { IFormData, TodoProps } from "../Todo";
 import TaskActionDialog from "./TaskActionDialog";
 
 const useStyles = makeStyles({
@@ -22,21 +22,16 @@ function TaskAction({ todoList, setTodoList }: TodoProps) {
     );
   };
 
-  const editTask = (
-    taskEditId: number,
-    taskEditName: string,
-    taskEditDescription: string
-  ): void => {
-    console.log("taskEditName", taskEditName);
+  const editTask = (taskEditId: number, data: IFormData): void => {
     setTodoList((todoList) =>
       todoList.map((task) => {
         if (task.id === taskEditId) {
-          task.taskName = taskEditName;
-          task.description = taskEditDescription;
+          task.taskName = data.taskName;
+          task.description = data.description;
           return {
             ...task,
-            taskName: taskEditName,
-            description: taskEditDescription,
+            taskName: data.taskName,
+            description: data.description,
           };
         }
 

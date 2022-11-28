@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -37,22 +37,29 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
   };
   const handleClose = () => {
     setOpenEdit(false);
+    reset();
+    setValue("taskName", task.taskName);
+    setValue("description",task.description);
   };
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<IFormData>({});
-  setValue("taskName", task.taskName);
-  setValue("description", task.description);
+  } = useForm<IFormData>();
+ 
+  useEffect(() => {
+    setValue("taskName", task.taskName);
+    setValue("description", task.description);
+  },[task]);
 
   const onSave = (data: IFormData) => {
     if (data.taskName !== null && data.description !== null) {
-      editTask(task.id, data.taskName, data.description);
+      editTask(task.id, data);
     }
 
-    setOpenEdit(false);
+   setOpenEdit(false);
   };
   return (
     <>
@@ -121,7 +128,7 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         name="taskName"
                       />
                       {errors.taskName && (
-                        <td className={classes.span}>This field is required</td>
+                        <span className={classes.span}>This field is required</span>
                       )}
 
                       <TextField
@@ -143,6 +150,7 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         id="new-todo-button"
                         variant="contained"
                         type="submit"
+                    
                       >
                         Save
                       </Button>
