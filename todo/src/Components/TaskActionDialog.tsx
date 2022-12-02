@@ -167,3 +167,111 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
 };
 
 export default TaskActionDialog;
+
+
+// import React, { useEffect } from "react";
+// import "./App.css";
+// import { Grid } from "@mui/material";
+// import Header from "./Components/Header";
+// import Main from "./Main";
+// import { Link } from "react-router-dom";
+// import { makeStyles } from "@material-ui/styles";
+// import { Button } from "@mui/material";
+// import { useState } from "react";
+// import axios from "axios";
+
+// const useStyles = makeStyles({
+//   routerbutton: {
+//     color: "white",
+//     gap: "40px",
+//     textDecoration: "none",
+//   },
+// });
+
+// const App = () => {
+//   const classes = useStyles();
+//   const [userName, setUserName] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [user, setUser] = useState({});
+
+//   useEffect(() => {
+//     const loggedInUser = localStorage.getItem("user");
+//     if (loggedInUser) {
+//       const foundUser = JSON.parse(loggedInUser);
+//       setUser(foundUser);
+//     }
+//   }, []);
+//   const handleLogOut = () => {
+//     setUser({});
+//     setUserName("");
+//     setPassword("");
+//     localStorage.clear();
+//   };
+//   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     const user = { userName, password };
+
+//     const response = await axios.post("/", user);
+//     setUser(response.data);
+//     localStorage.setItem("user", response.data);
+//     console.log(response.data);
+//   };
+
+//   // if (!user) {
+//   // return (<>
+//   //   <Button onClick={handleLogOut}>Sign Out</Button>
+//   //   <Grid container justifyContent="center" paddingTop="25px" gap="30px">
+//   //     <Button variant="contained">
+//   //       <Link className={classes.routerbutton} to="/">
+//   //         Todo List
+//   //       </Link>
+//   //     </Button>
+//   //     <Button variant="contained">
+//   //       <Link className={classes.routerbutton} to="/todob">
+//   //         TodoB
+//   //       </Link>
+//   //     </Button>
+//   //     <Header />
+//   //     <Main />
+//   //   </Grid>
+//   // </>)
+//   // }
+
+//   return (
+//     <>
+//       <form onSubmit={handleSubmit}>
+//         <label htmlFor="username">Username: </label>
+//         <input
+//           type="text"
+//           value={userName}
+//           placeholder="enter a username"
+//           onChange={({ target }) => setUserName(target.value)}
+//         />
+//         <div>
+//           <label htmlFor="password">password: </label>
+//           <input
+//             type="password"
+//             value={password}
+//             placeholder="enter a password"
+//             onChange={({ target }) => setPassword(target.value)}
+//           />
+//         </div>
+//         <button type="submit">Login</button>
+//       </form>
+//       <Grid container justifyContent="center" paddingTop="25px" gap="30px">
+//       <Button variant="contained">
+//         <Link className={classes.routerbutton} to="/">
+//           Todo List
+//         </Link>
+//       </Button>
+//       <Button variant="contained">
+//         <Link className={classes.routerbutton} to="/todob">
+//           TodoB
+//         </Link>
+//       </Button>
+//       <Header />
+//       <Main />
+//     </Grid>
+//     </>
+//   );
+// };
