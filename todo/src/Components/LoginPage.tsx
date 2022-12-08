@@ -1,0 +1,143 @@
+import React from "react";
+import { UserProps } from "../Todo";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { TextField } from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
+import { Button } from "@mui/material";
+import axios from "axios";
+import App from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  currentUserSelector,
+  setLoggedIn,
+} from "../store/currentUser/currentUserSlice";
+import { LoggedInType } from "../data/types/loggedInUser";
+import { UserType } from "../data/types/user.interface";
+const useStyles = makeStyles({
+  routerbutton: {
+    color: "white",
+    gap: "40px",
+    textDecoration: "none",
+  },
+  topbar: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: "20px",
+    fontSize: "20px",
+    justifyContent: "right",
+    fontWeight: "bolder",
+  },
+  userName: {
+    marginTop: "10px",
+    color: "#07030c",
+  },
+  welcome: {
+    marginTop: "10px",
+    color: "#a74881",
+  },
+  form: {
+    width: "400px",
+    height: "300px",
+    alignContent: "center",
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    rowGap: "20px",
+    position: "relative",
+    left: "700px",
+    top: "300px",
+    alignItems: "center",
+    borderRadius: "30px",
+  },
+  input: {
+    width: "350px",
+    height: "40px",
+    borderRadius: "30px",
+    textAlign: "center",
+    borderWidth: "1px",
+    fontSize: "15px",
+  },
+  label: {
+    fontWeight: "bolder",
+    fontSize: "20px",
+  },
+  formback: {
+    backgroundColor: "#bdbaba",
+    height: "960px",
+  },
+});
+
+const LoginPage = () => {
+  console.log("login page------------------------------------------");
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserProps>();
+
+  const setCurrentUser = async (loginResponse: LoggedInType) => {
+    dispatch(setLoggedIn(loginResponse));
+    const userType = loginResponse.user?.type;
+   
+  };
+
+  const onsubmit = (data: UserProps) => {
+     const user = { user: data };
+    axios
+      .post("https://reqres.in/api/login", {
+       email:user.user.email,
+       password:user.user.password,
+      })
+    
+      .then(async (response) => {
+        const loggedInUser: UserType = response.data;
+        await setCurrentUser(response.data);
+        localStorage.setItem("email", user.user.email);
+        localStorage.setItem("password", user.user.password);
+         console.log("logged",loggedInUser);
+
+      })
+      .catch((error) => {
+
+        console.log(error);
+      });
+    // }
+  };
+  return (
+    <>
+      <div className={classes.formback}>
+        <form className={classes.form} onSubmit={handleSubmit(onsubmit)}>
+          <TextField
+            {...register("email", { required: true })}
+            autoFocus
+            margin="dense"
+            id="name"
+            label="User Name"
+            type="text"
+            placeholder="Enter Task"
+            name="email"
+          />
+          {errors?.email && <span>This field is required</span>}
+          <TextField
+            {...register("password", { required: true })}
+            autoFocus
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+          />
+          <Button variant="contained" type="submit">
+            Submit
+          </Button>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default LoginPage;

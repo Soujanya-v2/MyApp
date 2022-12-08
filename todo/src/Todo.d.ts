@@ -21,3 +21,8 @@ interface TodoProps {
   setTodoList: Dispatch<SetStateAction<IFormData[]>>;
 }
 
+interface UserProps{
+email:string;
+  password:string;
+}
+
