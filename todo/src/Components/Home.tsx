@@ -1,25 +1,19 @@
-import React, { useEffect, useRef } from "react";
-import { Grid, TextField } from "@mui/material";
+import React from "react";
+import { Grid } from "@mui/material";
 import Header from "../Components/Header";
-import Main from "../Main";
-import { Link, Navigate, useRouteLoaderData } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import axios from "axios";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { useSelector } from "react-redux";
-
-import {
-  currentUserSelector,
-  setLoggedIn,
-} from "../store/currentUser/currentUserSlice";
-import LoginPage from "../Components/LoginPage";
-
+import { useDispatch } from "react-redux";
+import { signOut } from "../store/currentUser/userSlice";
+import { currentUserSelector } from "../store/currentUser/userSlice";
+import TodoTask from "./TodoTask";
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -75,27 +69,23 @@ const useStyles = makeStyles({
 });
 function Home() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const { user } = useSelector(currentUserSelector);
-  const { loggedIn } = useSelector(currentUserSelector);
-  const loggedInUser = localStorage.getItem("email");
+  const { userName } = useSelector(currentUserSelector);
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const logOut = () => {
+    dispatch(signOut({ loggedIn: false }));
+  };
   const handleClickClose = () => {
     setOpen(false);
-  };
-  const handleLogOut = () => {
-    handleClickClose();
-
-    localStorage.clear();
   };
   return (
     <>
       <div className={classes.topbar}>
         <div className={classes.welcome}> Welcome,</div>
-        <div className={classes.userName}>{loggedInUser}</div>
+        <div className={classes.userName}>{userName}</div>
         <div>
           <Button
             variant="contained"
@@ -121,7 +111,7 @@ function Home() {
               <Button onClick={handleClickClose}>Cancel</Button>
               <Button
                 onClick={() => {
-                  handleLogOut();
+                  logOut();
                 }}
                 autoFocus
                 variant="contained"
@@ -134,7 +124,7 @@ function Home() {
       </div>
       <Grid container justifyContent="center" paddingTop="25px" gap="30px">
         <Header />
-        <Main />
+        <TodoTask />
       </Grid>
     </>
   );

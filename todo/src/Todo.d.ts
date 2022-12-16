@@ -22,7 +22,7 @@ interface TodoProps {
 }
 
 interface UserProps{
-email:string;
+   email:string;
   password:string;
 }
 

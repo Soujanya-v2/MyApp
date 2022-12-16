@@ -1,19 +1,13 @@
 import React from "react";
 import { UserProps } from "../Todo";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import { Button } from "@mui/material";
 import axios from "axios";
-import App from "../App";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  currentUserSelector,
-  setLoggedIn,
-} from "../store/currentUser/currentUserSlice";
-import { LoggedInType } from "../data/types/loggedInUser";
-import { UserType } from "../data/types/user.interface";
+import { useDispatch } from "react-redux";
+import { login ,signOut } from "../store/currentUser/userSlice";
+
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -66,10 +60,14 @@ const useStyles = makeStyles({
     backgroundColor: "#bdbaba",
     height: "960px",
   },
+  span:{
+    color:"red",
+    fontSize:"17px"
+
+  }
 });
 
 const LoginPage = () => {
-  console.log("login page------------------------------------------");
   const classes = useStyles();
   const dispatch = useDispatch();
   const {
@@ -78,33 +76,32 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<UserProps>();
 
-  const setCurrentUser = async (loginResponse: LoggedInType) => {
-    dispatch(setLoggedIn(loginResponse));
-    const userType = loginResponse.user?.type;
-   
-  };
-
   const onsubmit = (data: UserProps) => {
-     const user = { user: data };
-    axios
-      .post("https://reqres.in/api/login", {
-       email:user.user.email,
-       password:user.user.password,
-      })
-    
-      .then(async (response) => {
-        const loggedInUser: UserType = response.data;
-        await setCurrentUser(response.data);
-        localStorage.setItem("email", user.user.email);
-        localStorage.setItem("password", user.user.password);
-         console.log("logged",loggedInUser);
+    if (data.email === "" || data.password === ""){
+      alert("Invalid Email or Password");
+    } else {
+      axios
+        .post("https://reqres.in/api/login", {
+          email: data.email,
+          password: data.password,
+          loggedIn: true,
+        })
+        .then((result) => {
+          localStorage.setItem("token", result.data.token);
 
-      })
-      .catch((error) => {
-
-        console.log(error);
-      });
-    // }
+          dispatch(
+            login({
+              email: data.email,
+              password: data.password,
+              loggedIn: true,
+            })
+          );
+        })
+        .catch((error) => {
+          alert("Invalid Email or Password");
+          dispatch(signOut({ loggedIn: false }));
+        });
+    }
   };
   return (
     <>
@@ -120,7 +117,7 @@ const LoginPage = () => {
             placeholder="Enter Task"
             name="email"
           />
-          {errors?.email && <span>This field is required</span>}
+          {errors?.email && <span className={classes.span}>This field is required</span>}
           <TextField
             {...register("password", { required: true })}
             autoFocus
