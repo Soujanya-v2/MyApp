@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login ,signOut } from "../store/currentUser/userSlice";
-
+import { useState } from "react";
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -100,6 +100,7 @@ const LoginPage = () => {
         .catch((error) => {
           alert("Invalid Email or Password");
           dispatch(signOut({ loggedIn: false }));
+          
         });
     }
   };
