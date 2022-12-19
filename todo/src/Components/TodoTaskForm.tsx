@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/styles";
 import TaskAction from "./TaskAction";
+import { currentUserSelector } from "../store/currentUser/userSlice";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   button: {
@@ -50,6 +52,7 @@ const TodoTaskForm: React.FC = () => {
       id: count,
       date: date,
     };
+
     setTodoList([...todoList, newTask]);
     reset();
     handleClose();

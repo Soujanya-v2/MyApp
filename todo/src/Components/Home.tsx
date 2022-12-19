@@ -69,7 +69,7 @@ const useStyles = makeStyles({
 });
 function Home() {
   const classes = useStyles();
-  const { userName } = useSelector(currentUserSelector);
+  const {userName}= useSelector(currentUserSelector);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const handleClickOpen = () => {

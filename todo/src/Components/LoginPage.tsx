@@ -7,7 +7,6 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login ,signOut } from "../store/currentUser/userSlice";
-import { useState } from "react";
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -74,6 +73,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<UserProps>();
 
   const onsubmit = (data: UserProps) => {
@@ -86,6 +86,7 @@ const LoginPage = () => {
           password: data.password,
           loggedIn: true,
         })
+
         .then((result) => {
           localStorage.setItem("token", result.data.token);
 
@@ -100,7 +101,7 @@ const LoginPage = () => {
         .catch((error) => {
           alert("Invalid Email or Password");
           dispatch(signOut({ loggedIn: false }));
-          
+          reset();
         });
     }
   };
