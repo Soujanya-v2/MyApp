@@ -11,7 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { signOut } from "../store/currentUser/userSlice";
+import { signOut , login} from "../store/currentUser/userSlice";
 import { currentUserSelector } from "../store/currentUser/userSlice";
 import TodoTask from "./TodoTask";
 const useStyles = makeStyles({
@@ -70,13 +70,15 @@ const useStyles = makeStyles({
 function Home() {
   const classes = useStyles();
   const {userName}= useSelector(currentUserSelector);
+
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const logOut = () => {
-    dispatch(signOut({ loggedIn: false }));
+    dispatch(signOut());
   };
   const handleClickClose = () => {
     setOpen(false);

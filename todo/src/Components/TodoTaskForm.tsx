@@ -11,9 +11,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/styles";
 import TaskAction from "./TaskAction";
-import { currentUserSelector } from "../store/currentUser/userSlice";
-import { useSelector } from "react-redux";
-
 const useStyles = makeStyles({
   button: {
     paddingTop: 30,
@@ -36,6 +33,7 @@ const TodoTaskForm: React.FC = () => {
   const [todoList, setTodoList] = useState<IFormData[]>([]);
   const [open, setOpen] = React.useState(false);
   const [count, setCount] = useState(1);
+
   const {
     register,
     handleSubmit,
@@ -44,6 +42,7 @@ const TodoTaskForm: React.FC = () => {
   } = useForm<IFormData>();
 
   const onSubmit = (data: IFormData) => {
+  
     setCount((prevCount) => prevCount + 1);
     const date = new Date();
     const newTask = {
@@ -52,7 +51,7 @@ const TodoTaskForm: React.FC = () => {
       id: count,
       date: date,
     };
-
+ 
     setTodoList([...todoList, newTask]);
     reset();
     handleClose();

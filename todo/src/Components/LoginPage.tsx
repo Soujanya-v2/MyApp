@@ -100,7 +100,6 @@ const LoginPage = () => {
         })
         .catch((error) => {
           alert("Invalid Email or Password");
-          dispatch(signOut({ loggedIn: false }));
           reset();
         });
     }

@@ -8,13 +8,9 @@ import LoginPage from "./Components/LoginPage";
 function App() {
   const { loggedIn } = useSelector(currentUserSelector);
   return loggedIn ? (
-    <>
       <Home />
-    </>
   ) : (
-    <>
       <LoginPage />
-    </>
   );
 }
 
