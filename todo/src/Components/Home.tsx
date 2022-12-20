@@ -130,7 +130,9 @@ function Home() {
                 autoFocus
                 variant="contained"
               >
+                <Link to="/">
                 SignOut
+                </Link>
               </Button>
             </DialogActions>
           </Dialog>
