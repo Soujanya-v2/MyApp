@@ -23,6 +23,12 @@ interface TodoProps {
 
 interface UserProps{
    email:string;
-  password:string;
+   password:string;
 }
-
+interface UserListProps{
+  avatar:string;
+  id:number;
+  email:string;
+  first_name:string;
+  last_name:string;
+}

@@ -11,9 +11,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { signOut , login} from "../store/currentUser/userSlice";
+import { signOut} from "../store/currentUser/userSlice";
 import { currentUserSelector } from "../store/currentUser/userSlice";
 import TodoTask from "./TodoTask";
+import UserList from "../Components/UserList";
+import {  Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -26,15 +29,16 @@ const useStyles = makeStyles({
     columnGap: "20px",
     fontSize: "20px",
     justifyContent: "right",
-    fontWeight: "bolder",
   },
   userName: {
     marginTop: "10px",
     color: "#07030c",
+    fontWeight: "bolder",
   },
   welcome: {
     marginTop: "10px",
     color: "#a74881",
+    fontWeight: "bolder",
   },
   form: {
     width: "400px",
@@ -66,11 +70,17 @@ const useStyles = makeStyles({
     backgroundColor: "#bdbaba",
     height: "960px",
   },
+  userList: {
+    marginTop: "10px",
+    fontStyle: "none",
+  },
+  button: {
+    textDecoration: "none",
+  },
 });
 function Home() {
   const classes = useStyles();
-  const {userName}= useSelector(currentUserSelector);
-
+  const { userName } = useSelector(currentUserSelector);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -83,10 +93,12 @@ function Home() {
   const handleClickClose = () => {
     setOpen(false);
   };
+
   return (
     <>
       <div className={classes.topbar}>
         <div className={classes.welcome}> Welcome,</div>
+
         <div className={classes.userName}>{userName}</div>
         <div>
           <Button
@@ -126,6 +138,17 @@ function Home() {
       </div>
       <Grid container justifyContent="center" paddingTop="25px" gap="30px">
         <Header />
+        <div className={classes.userList}>
+          <Routes>
+            <Route path="/users" element={<UserList />} />
+          </Routes>
+          <Link to="/users">
+            <Button variant="contained" className={classes.button}>
+              View User List
+            </Button>
+          </Link>
+        </div>
+
         <TodoTask />
       </Grid>
     </>

@@ -6,7 +6,8 @@ import { makeStyles } from "@material-ui/styles";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { login ,signOut } from "../store/currentUser/userSlice";
+import { login } from "../store/currentUser/userSlice";
+
 const useStyles = makeStyles({
   routerbutton: {
     color: "white",
@@ -59,11 +60,10 @@ const useStyles = makeStyles({
     backgroundColor: "#bdbaba",
     height: "960px",
   },
-  span:{
-    color:"red",
-    fontSize:"17px"
-
-  }
+  span: {
+    color: "red",
+    fontSize: "17px",
+  },
 });
 
 const LoginPage = () => {
@@ -73,11 +73,11 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<UserProps>();
 
   const onsubmit = (data: UserProps) => {
-    if (data.email === "" || data.password === ""){
+    if (data.email === "" || data.password === "") {
       alert("Invalid Email or Password");
     } else {
       axios
@@ -104,6 +104,7 @@ const LoginPage = () => {
         });
     }
   };
+
   return (
     <>
       <div className={classes.formback}>
@@ -118,7 +119,9 @@ const LoginPage = () => {
             placeholder="Enter Task"
             name="email"
           />
-          {errors?.email && <span className={classes.span}>This field is required</span>}
+          {errors?.email && (
+            <span className={classes.span}>This field is required</span>
+          )}
           <TextField
             {...register("password", { required: true })}
             autoFocus
