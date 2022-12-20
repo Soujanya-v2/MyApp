@@ -71,6 +71,7 @@ const UserList = () => {
         console.error("Error while Loading", err);
       });
   };
+  
   useEffect(() => {
     setTimeout(() => getList(), 1000);
   }, []);
