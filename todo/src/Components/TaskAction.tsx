@@ -34,7 +34,6 @@ function TaskAction({ todoList, setTodoList }: TodoProps) {
             description: data.description,
           };
         }
-
         return task;
       })
     );

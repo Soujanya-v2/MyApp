@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { makeStyles } from "@material-ui/styles";
 import TaskAction from "./TaskAction";
+import TaskForm from "./TaskForm";
 const useStyles = makeStyles({
   button: {
     paddingTop: 30,
@@ -41,7 +42,7 @@ const TodoTaskForm: React.FC = () => {
     formState: { errors },
   } = useForm<IFormData>();
 
-  const onSubmit = (data: IFormData) => {
+  const onSubmit = (data :IFormData ) => {
   
     setCount((prevCount) => prevCount + 1);
     const date = new Date();
@@ -63,6 +64,7 @@ const TodoTaskForm: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
     reset();
+
   };
   return (
     <>
@@ -74,6 +76,7 @@ const TodoTaskForm: React.FC = () => {
         <Dialog open={open} onClose={handleClose}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle>Add Task</DialogTitle>
+            {/* <TaskForm todoList={todoList} setTodoList={setTodoList}/> */}
             <DialogContent>
               <DialogContentText>
                 Please enter task and description here.
@@ -117,7 +120,7 @@ const TodoTaskForm: React.FC = () => {
           </form>
         </Dialog>
       </Grid>
-      <TaskAction todoList={todoList} setTodoList={setTodoList} />
+      <TaskAction todoList={todoList} setTodoList={setTodoList}/>
     </>
   );
 };

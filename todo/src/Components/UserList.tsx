@@ -49,35 +49,38 @@ const useStyles = makeStyles({
     color: "grey",
   },
 });
+const PER_PAGE = 2;
+
 const UserList = () => {
   const classes = useStyles();
-  const PER_PAGE = 2;
-  const apiPath = "https://reqres.in/api/users?";
-  const [Lists, setLists] = useState<UserListProps[]>([]);
+  const [lists, setLists] = useState<UserListProps[]>([]);
   const [length, setLength] = React.useState<number>(0);
   const getList = () => {
-    const pageNo = Math.ceil(Lists.length / PER_PAGE) + 1;
-    const queryParam = "page=" + pageNo + "&per_page=" + PER_PAGE;
-    const finalUrl = apiPath + queryParam;
+    const pageNo = Math.ceil(lists.length / PER_PAGE) + 1;
     axios
-      .get(finalUrl)
+      .get("https://reqres.in/api/users", {
+        params: {
+          page: pageNo,
+          per_page: PER_PAGE,
+        },
+      })
       .then((res) => {
         const apiRes = res.data.data;
         setLength(res.data.total);
-        const mergeData = [...Lists, ...apiRes];
+        const mergeData = [...lists, ...apiRes];
         setLists(mergeData);
       })
       .catch((err) => {
         console.error("Error while Loading", err);
       });
   };
-  
+
   useEffect(() => {
-    setTimeout(() => getList(), 1000);
+    getList();
   }, []);
 
   const fetchMoreData = () => {
-    setTimeout(() => getList(), 1000);
+    getList();
   };
 
   return (
@@ -87,40 +90,38 @@ const UserList = () => {
         <div className="row">
           <InfiniteScroll
             height={"200px"}
-            dataLength={Lists.length}
+            dataLength={lists.length}
             next={fetchMoreData}
-            hasMore={Lists.length < length}
+            hasMore={lists.length < length}
             loader={<h4>Loading......</h4>}
           >
-            {Lists &&
-              Lists.length > 0 &&
-              Lists.map((key) => {
-                return (
-                  <>
-                    <div className={classes.cards}>
-                      <div className="image-block">
-                        <img
-                          className={classes.image}
-                          src={key?.avatar}
-                          alt="test image"
-                        />
+            {lists?.map?.((key) => {
+              return (
+                <>
+                  <div className={classes.cards}>
+                    <div className="image-block">
+                      <img
+                        className={classes.image}
+                        src={key?.avatar}
+                        alt="test image"
+                      />
+                    </div>
+                    <div className={classes.name}>
+                      <div>
+                        <h3>
+                          {key?.first_name}
+                          {key?.last_name}
+                        </h3>
                       </div>
-                      <div className={classes.name}>
-                        <div>
-                          <h3>
-                            {key?.first_name}
-                            {key?.last_name}
-                          </h3>
-                        </div>
-                        <div className={classes.email}>
-                          {key?.email}
-                          <hr className={classes.hr} />
-                        </div>
+                      <div className={classes.email}>
+                        {key?.email}
+                        <hr className={classes.hr} />
                       </div>
                     </div>
-                  </>
-                );
-              })}
+                  </div>
+                </>
+              );
+            })}
           </InfiniteScroll>
         </div>
       </div>

@@ -150,14 +150,14 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         id="new-todo-button"
                         variant="contained"
                         type="submit"
-                    
                       >
                         Save
                       </Button>
                     </DialogActions>
                   </form>
                 </Dialog>
-              </Grid>
+              </Grid> 
+              
             </div>
           </td>
         </div>
