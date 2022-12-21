@@ -39,7 +39,7 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
     setOpenEdit(false);
     reset();
     setValue("taskName", task.taskName);
-    setValue("description",task.description);
+    setValue("description", task.description);
   };
   const {
     register,
@@ -48,18 +48,18 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
     reset,
     formState: { errors },
   } = useForm<IFormData>();
- 
+
   useEffect(() => {
     setValue("taskName", task.taskName);
     setValue("description", task.description);
-  },[task]);
+  }, [task]);
 
   const onSave = (data: IFormData) => {
     if (data.taskName !== null && data.description !== null) {
       editTask(task.id, data);
     }
 
-   setOpenEdit(false);
+    setOpenEdit(false);
   };
   return (
     <>
@@ -69,7 +69,6 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
           <td>{task.taskName}</td>
           <td>{task.description}</td>
           <td>{task.date.toLocaleString()}</td>
-
           <td>
             <div className="actionButton">
               <IconButton onClick={handleClickOpen}>
@@ -128,7 +127,9 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                         name="taskName"
                       />
                       {errors.taskName && (
-                        <span className={classes.span}>This field is required</span>
+                        <span className={classes.span}>
+                          This field is required
+                        </span>
                       )}
 
                       <TextField
@@ -156,8 +157,7 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
                     </DialogActions>
                   </form>
                 </Dialog>
-              </Grid> 
-              
+              </Grid>
             </div>
           </td>
         </div>
@@ -167,4 +167,3 @@ const TaskActionDialog = ({ task, deleteTask, editTask }: TodoTaskProps) => {
 };
 
 export default TaskActionDialog;
-

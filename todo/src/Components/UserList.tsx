@@ -55,12 +55,13 @@ const UserList = () => {
   const classes = useStyles();
   const [lists, setLists] = useState<UserListProps[]>([]);
   const [length, setLength] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1);
+
   const getList = () => {
-    const pageNo = Math.ceil(lists.length / PER_PAGE) + 1;
     axios
       .get("https://reqres.in/api/users", {
         params: {
-          page: pageNo,
+          page: page,
           per_page: PER_PAGE,
         },
       })
@@ -77,10 +78,10 @@ const UserList = () => {
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [page]);
 
   const fetchMoreData = () => {
-    getList();
+    setPage(Math.ceil(lists.length / PER_PAGE) + 1);
   };
 
   return (
@@ -95,7 +96,7 @@ const UserList = () => {
             hasMore={lists.length < length}
             loader={<h4>Loading......</h4>}
           >
-            {lists?.map?.((key) => {
+            {lists?.map((key) => {
               return (
                 <>
                   <div className={classes.cards}>
