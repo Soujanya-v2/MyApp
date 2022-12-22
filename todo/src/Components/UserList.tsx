@@ -81,7 +81,7 @@ const UserList = () => {
   }, [page]);
 
   const fetchMoreData = () => {
-    setPage(Math.ceil(lists.length / PER_PAGE) + 1);
+    setPage(page+1);
   };
 
   return (
