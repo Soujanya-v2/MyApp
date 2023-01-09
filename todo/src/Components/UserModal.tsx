@@ -132,7 +132,7 @@ function UserModal({
             helperText={
               errors["email"]
                 ? errors["email"].message
-                : "This field is required"
+                : ""
             }
           />
           <TextField
