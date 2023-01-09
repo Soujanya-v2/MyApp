@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IUserProps, UserListProps } from "../Todo";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
@@ -8,6 +8,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 const useStyles = makeStyles({
   routerbutton: {
@@ -71,13 +73,18 @@ function UserModal({
   updateUser,
 }: IUserProps) {
   const classes = useStyles();
-  
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Email is required").email("Email is invalid"),
+  });
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<UserListProps>();
+  } = useForm<UserListProps>({
+    mode: "onChange",
+    resolver: yupResolver(validationSchema),
+  });
 
   const handleClose = () => setOpen(false);
 
@@ -104,7 +111,7 @@ function UserModal({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <form  onSubmit={handleSubmit(onSave)}>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
         <DialogContent>
           <DialogContentText>
             <div>{keyValue}</div>
@@ -116,16 +123,18 @@ function UserModal({
             autoFocus
             margin="dense"
             id="name"
-            label="User Name"
+            label="Email"
             fullWidth
             type="text"
             variant="standard"
             placeholder="Enter Task"
-            name="email"
+            error={!!errors["email"]}
+            helperText={
+              errors["email"]
+                ? errors["email"].message
+                : "This field is required"
+            }
           />
-          {errors?.email && (
-            <span className={classes.span}>This field is required</span>
-          )}
           <TextField
             {...register("first_name", { required: true })}
             autoFocus

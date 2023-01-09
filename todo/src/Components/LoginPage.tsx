@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../store/currentUser/userSlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 const useStyles = makeStyles({
   routerbutton: {
@@ -69,12 +71,19 @@ const useStyles = makeStyles({
 const LoginPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Email is required").email("Email is invalid"),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<UserProps>();
+  } = useForm<UserProps>({
+    mode: "onChange",
+    resolver: yupResolver(validationSchema),
+  });
 
   const onsubmit = (data: UserProps) => {
     if (data.email === "" || data.password === "") {
@@ -117,11 +126,13 @@ const LoginPage = () => {
             label="User Name"
             type="text"
             placeholder="Enter Task"
-            name="email"
+            error={!!errors["email"]}
+            helperText={
+              errors["email"]
+                ? errors["email"].message
+                : "This field is required"
+            }
           />
-          {errors?.email && (
-            <span className={classes.span}>This field is required</span>
-          )}
           <TextField
             {...register("password", { required: true })}
             autoFocus
