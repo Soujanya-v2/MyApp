@@ -9,17 +9,9 @@ import { useDispatch } from "react-redux";
 import { login } from "../store/currentUser/userSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-// import IconButton from "@mui/material";
-import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-// import TextField from '@mui/material/TextField';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -146,6 +138,12 @@ const LoginPage = () => {
               label="Password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
+              error={!!errors["password"]}
+              helperText={
+                errors["password"]
+                ? errors["password"].message
+                : ""
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -156,11 +154,6 @@ const LoginPage = () => {
                 ),
               }}
             />
-            {!!errors["password"] && (
-              <FormHelperText error>
-                {errors["password"].message}
-              </FormHelperText>
-            )}
           </FormControl>
           <Button variant="contained" type="submit">
             Submit
