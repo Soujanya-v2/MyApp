@@ -9,6 +9,19 @@ import { useDispatch } from "react-redux";
 import { login } from "../store/currentUser/userSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+// import IconButton from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import FilledInput from "@mui/material/FilledInput";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+// import TextField from '@mui/material/TextField';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const useStyles = makeStyles({
   routerbutton: {
@@ -46,18 +59,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     borderRadius: "30px",
   },
-  input: {
-    width: "350px",
-    height: "40px",
-    borderRadius: "30px",
-    textAlign: "center",
-    borderWidth: "1px",
-    fontSize: "15px",
-  },
-  label: {
-    fontWeight: "bolder",
-    fontSize: "20px",
-  },
   formback: {
     backgroundColor: "#bdbaba",
     height: "960px",
@@ -74,6 +75,7 @@ const LoginPage = () => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
+    password: Yup.string().required("Password is required"),
   });
   const {
     register,
@@ -114,35 +116,52 @@ const LoginPage = () => {
     }
   };
 
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   return (
     <>
       <div className={classes.formback}>
         <form className={classes.form} onSubmit={handleSubmit(onsubmit)}>
-          <TextField
-            {...register("email", { required: true })}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="User Name"
-            type="text"
-            placeholder="Enter Task"
-            error={!!errors["email"]}
-            helperText={
-              errors["email"]
-                ? errors["email"].message
-                : ""
-            }
-          />
-          <TextField
-            {...register("password", { required: true })}
-            autoFocus
-            margin="dense"
-            id="password"
-            label="Password"
-            type="password"
-            placeholder="Enter Password"
-            name="password"
-          />
+          <FormControl>
+            <TextField
+              {...register("email", { required: true })}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="User Name"
+              type="text"
+              placeholder="Enter Task"
+              error={!!errors["email"]}
+              helperText={errors["email"] ? errors["email"].message : ""}
+            />
+
+            <TextField
+              {...register("password", { required: true })}
+              autoFocus
+              margin="dense"
+              variant="outlined"
+              id="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword} edge="end">
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {!!errors["password"] && (
+              <FormHelperText error>
+                {errors["password"].message}
+              </FormHelperText>
+            )}
+          </FormControl>
           <Button variant="contained" type="submit">
             Submit
           </Button>
