@@ -73,9 +73,12 @@ function UserModal({
   updateUser,
 }: IUserProps) {
   const classes = useStyles();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
+    first_name: Yup.string().required(" password is required"),
   });
+
   const {
     register,
     handleSubmit,
@@ -129,11 +132,7 @@ function UserModal({
             variant="standard"
             placeholder="Enter Task"
             error={!!errors["email"]}
-            helperText={
-              errors["email"]
-                ? errors["email"].message
-                : ""
-            }
+            helperText={errors["email"] ? errors["email"].message : ""}
           />
           <TextField
             {...register("first_name", { required: true })}
@@ -146,6 +145,10 @@ function UserModal({
             variant="standard"
             placeholder="Enter Password"
             name="first_name"
+            error={!!errors["first_name"]}
+            helperText={
+              errors["first_name"] ? errors["first_name"].message : ""
+            }
           />
         </DialogContent>
         <DialogActions>

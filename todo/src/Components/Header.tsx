@@ -8,15 +8,21 @@ const useStyles = makeStyles({
     width: "50vh",
     backgroundColor: "grey",
     fontSize: "20px",
+    display: "flex",
+    flexDirection: "row",
+    columnGap: "1400px",
   },
 });
 
 const Header = () => {
   const classes = useStyles();
+
   return (
-    <Grid container justifyContent="center" className={classes.headerText}>
-      <h2>TODO-LIST</h2>
-    </Grid>
+    <>
+      <Grid container className={classes.headerText}>
+        <h2>TODO-LIST</h2>
+      </Grid>
+    </>
   );
 };
 

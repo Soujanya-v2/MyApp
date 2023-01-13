@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { UserProps } from "../Todo";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -14,6 +14,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   routerbutton: {
@@ -64,7 +66,7 @@ const useStyles = makeStyles({
 const LoginPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const Navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string().required("Password is required"),
@@ -100,6 +102,7 @@ const LoginPage = () => {
               loggedIn: true,
             })
           );
+          Navigate("/");
         })
         .catch((error) => {
           alert("Invalid Email or Password");
@@ -107,7 +110,7 @@ const LoginPage = () => {
         });
     }
   };
-
+  useEffect(() => {});
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -139,11 +142,7 @@ const LoginPage = () => {
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
               error={!!errors["password"]}
-              helperText={
-                errors["password"]
-                ? errors["password"].message
-                : ""
-              }
+              helperText={errors["password"] ? errors["password"].message : ""}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -155,9 +154,14 @@ const LoginPage = () => {
               }}
             />
           </FormControl>
+
           <Button variant="contained" type="submit">
             Submit
           </Button>
+
+          <Link replace to="/">
+            <Button variant="contained">Back to Main Page</Button>
+          </Link>
         </form>
       </div>
     </>

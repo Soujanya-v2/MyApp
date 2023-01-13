@@ -10,13 +10,7 @@ import { Grid } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { IFormData } from "../Todo";
-import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles({
-  span: {
-    color: "red",
-  },
-});
 function TaskActionDialogModal({
   title,
   task,
@@ -26,7 +20,7 @@ function TaskActionDialogModal({
   open,
   setOpen,
 }: TitleProps) {
-  const classes = useStyles();
+ 
   const [editOpen, setEditOpen] = React.useState(open);
 
   const {
@@ -83,7 +77,6 @@ function TaskActionDialogModal({
 
   return (
     <>
-   
       <Grid item container justifyContent="center" alignItems="center">
         <Dialog open={editOpen} onClose={handleClose}>
           <form onSubmit={handleSubmit(onSave)}>
@@ -104,12 +97,7 @@ function TaskActionDialogModal({
                 variant="standard"
                 placeholder="Enter Task"
                 name="taskName"
-                helperText="This field is required"
               />
-              {/* {errors.taskName && (
-                <span className={classes.span}>This field is required</span>
-              )} */}
-
               <TextField
                 {...register("description", { required: true })}
                 autoFocus
@@ -118,6 +106,8 @@ function TaskActionDialogModal({
                 label="Description"
                 type="text"
                 fullWidth
+                multiline
+                maxRows={4}
                 variant="standard"
                 name="description"
                 placeholder="Description"
@@ -137,12 +127,3 @@ function TaskActionDialogModal({
 }
 
 export default TaskActionDialogModal;
-
-
-
-
-
-
-
-
-

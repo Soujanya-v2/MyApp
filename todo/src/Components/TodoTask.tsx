@@ -6,10 +6,19 @@ import { useState } from "react";
 import { UserListProps } from "../Todo";
 import { Grid } from "@mui/material";
 import UserModal from "./UserModal";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyles = makeStyles({
+  tableBox: {
+    display: "flex",
+    flexDirection: "row",
+    paddingTop: "50px",
+  },
+});
 const PER_PAGE = 12;
 
 function TodoTask() {
+  const classes = useStyles();
   const [users, setUsers] = useState<UserListProps[]>([]);
   const [open, setOpen] = React.useState(false);
   const [login, setLogin] = React.useState(false);
@@ -95,51 +104,68 @@ function TodoTask() {
   return (
     <>
       <Grid item container justifyContent="center" alignItems="center">
-        <Button variant="outlined" onClick={handleCreate}>
-          Create
-        </Button>
+        <Grid
+          item
+          container
+          justifyContent="center"
+          alignItems="center"
+          flex-direction="column"
+          marginTop="60px"
+        >
+          <Button variant="outlined" onClick={handleCreate}>
+            Create
+          </Button>
+        </Grid>
+        <Grid container justifyContent="center">
+          <h1>Add User List</h1>
+        </Grid>
+
+        <div>
+          <table>
+            <thead className="task">
+              <tr className="content">
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Delete</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {login &&
+                users.map((data) => {
+                  return (
+                    <div className="task">
+                      <tr className="content">
+                        <td>{data.email} </td>
+                        <td>{data.first_name}</td>
+                        <td>
+                          <Button onClick={() => deleteUser(data.id)}>
+                            delete
+                          </Button>
+                        </td>
+                        <td>
+                          <Button onClick={() => handleEdit(data)}>edit</Button>
+                        </td>
+                      </tr>
+                    </div>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+        <Grid item container justifyContent="center" alignItems="center">
+          {open && (
+            <UserModal
+              addUser={addUser}
+              setOpen={setOpen}
+              open={open}
+              updatedUser={updatedUser ? updatedUser : null}
+              keyValue={keyVal}
+              updateUser={updateUser}
+            />
+          )}
+        </Grid>
       </Grid>
-      <table>
-        <thead className="task">
-          <tr className="content">
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Delete</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {login &&
-            users.map((data) => {
-              return (
-                <div className="task">
-                  <tr className="content">
-                    <td>{data.email} </td>
-                    <td>{data.first_name}</td>
-                    <td>
-                      <Button onClick={() => deleteUser(data.id)}>
-                        delete
-                      </Button>
-                    </td>
-                    <td>
-                      <Button onClick={() => handleEdit(data)}>edit</Button>
-                    </td>
-                  </tr>
-                </div>
-              );
-            })}
-        </tbody>
-      </table>
-      {open && (
-        <UserModal
-          addUser={addUser}
-          setOpen={setOpen}
-          open={open}
-          updatedUser={updatedUser ? updatedUser : null}
-          keyValue={keyVal}
-          updateUser={updateUser}
-        />
-      )}
     </>
   );
 }

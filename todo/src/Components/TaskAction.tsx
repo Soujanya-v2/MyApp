@@ -28,6 +28,7 @@ function TaskAction({ todoList, setTodoList }: TodoProps) {
         if (task.id === taskEditId) {
           task.taskName = data.taskName;
           task.description = data.description;
+
           return {
             ...task,
             taskName: data.taskName,

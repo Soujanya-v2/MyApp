@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { UserListProps } from "../Todo";
 import { makeStyles } from "@material-ui/styles";
+import { Grid } from "@mui/material";
 
 const useStyles = makeStyles({
   container: {
@@ -81,51 +82,53 @@ const UserList = () => {
   }, [page]);
 
   const fetchMoreData = () => {
-    setPage(page+1);
+    setPage(page + 1);
   };
 
   return (
     <>
-      <div className={classes.container}>
-        <h2>User List</h2>
-        <div className="row">
-          <InfiniteScroll
-            height={"200px"}
-            dataLength={lists.length}
-            next={fetchMoreData}
-            hasMore={lists.length < length}
-            loader={<h4>Loading......</h4>}
-          >
-            {lists?.map((key) => {
-              return (
-                <>
-                  <div className={classes.cards}>
-                    <div className="image-block">
-                      <img
-                        className={classes.image}
-                        src={key?.avatar}
-                        alt="test image"
-                      />
-                    </div>
-                    <div className={classes.name}>
-                      <div>
-                        <h3>
-                          {key?.first_name}
-                          {key?.last_name}
-                        </h3>
+      <Grid container justifyContent="center">
+        <div className={classes.container}>
+          <h2>User List</h2>
+          <div className="row">
+            <InfiniteScroll
+              height={"200px"}
+              dataLength={lists.length}
+              next={fetchMoreData}
+              hasMore={lists.length < length}
+              loader={<h4>Loading......</h4>}
+            >
+              {lists?.map((key) => {
+                return (
+                  <>
+                    <div className={classes.cards}>
+                      <div className="image-block">
+                        <img
+                          className={classes.image}
+                          src={key?.avatar}
+                          alt="test image"
+                        />
                       </div>
-                      <div className={classes.email}>
-                        {key?.email}
-                        <hr className={classes.hr} />
+                      <div className={classes.name}>
+                        <div>
+                          <h3>
+                            {key?.first_name}
+                            {key?.last_name}
+                          </h3>
+                        </div>
+                        <div className={classes.email}>
+                          {key?.email}
+                          <hr className={classes.hr} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              );
-            })}
-          </InfiniteScroll>
+                  </>
+                );
+              })}
+            </InfiniteScroll>
+          </div>
         </div>
-      </div>
+      </Grid>
     </>
   );
 };
